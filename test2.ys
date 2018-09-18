@@ -1,0 +1,19 @@
+.pos 0
+	irmovq 	stack, %rsp
+	irmovq	$1, %rax
+	irmovq 	$2, %rbx
+	subq	%rbx, %rax
+	jl		0x100			#test conditional jump
+	irmovq	$16, %rdi
+	halt
+
+.pos 0x100					#jump here
+	addq	%rax, %rbx		#test opq (add)
+	halt
+	
+.pos 0x200
+stack:
+
+
+
+#everything worked as expected

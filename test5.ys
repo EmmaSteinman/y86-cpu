@@ -1,0 +1,21 @@
+.pos 0
+	irmovq 	stack, %rsp
+	#call 0xffffffffffffffff		#test invalid call
+	popq	%rax					#test pop
+	rrmovq	%rax, %rdx
+	pushq	%rax					#test push
+	irmovq	$2, %rbx
+	subq	%rdx, %rbx
+	cmovl	%rbx, %rcx				#test cmov
+	cmovge	%rdx, %rcx
+	iaddq	$0x500, %rsi			#test addi (extra credits)
+	halt
+	
+.pos 0x200
+stack:
+	.quad 0x0000000000000001		#value to be popped
+	
+	
+	
+	
+#everything worked as expected

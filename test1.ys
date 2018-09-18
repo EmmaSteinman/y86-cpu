@@ -1,0 +1,12 @@
+.pos 0
+	irmovq 	stack, %rsp		#test irmovq
+	irmovq	$1, %rax
+	irmovq 	$2, %rbx
+	subq	%rax, %rbx		#test op (sub)
+	halt					#test halt
+	
+.pos 0x200
+stack:
+
+
+#everything worked as expected

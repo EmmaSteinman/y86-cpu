@@ -1,0 +1,15 @@
+.pos 0
+	irmovq 	stack, %rsp
+	irmovq	$5, %rdi
+	irmovq	$64, %rsi
+	rmmovq	%rdi, (%rsi)		#test memory rmmovq
+	addq	%rdi, %rdi			#can add register to self? yes.
+	mrmovq	(%rsi), %rax		#test memory mrmovq
+	halt
+	
+.pos 0x200
+stack:
+
+
+
+#everything worked as expected

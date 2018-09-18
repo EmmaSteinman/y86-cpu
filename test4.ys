@@ -1,0 +1,67 @@
+.pos 0
+	irmovq 	stack, %rsp
+	nop							#test nop
+	call main
+	halt
+
+.align 8						#test memory (loading dmem)
+array:	
+	.quad 0x0000000000000006
+	.quad 0xfffffffffffffffc
+	.quad 0x0000000000000002
+	.quad 0x0000000000000005
+	.quad 0x0000000000000000
+	.quad 0x0000000000000009
+	.quad 0xffffffffffffffff
+
+main: 
+	irmovq 	array, %rdi			# array
+	irmovq 	$7, %rsi			# n
+	call 	sort				# test call (also selection sort)
+	ret							# test return
+	
+sort:						# testing basically everything not caught in the first 3
+	irmovq 	$8, %r8			# shift constant
+	irmovq 	$1, %r9			# constant 1
+	xorq 	%rax, %rax		# set %rax = 0
+	andq 	%rsi, %rsi		# set CC
+	irmovq	$0, %r10		# i = 0
+L1:
+	irmovq	$0x7fffffff, %rcx		# min = infinity
+	rrmovq	%r10, %r11		# j = i
+	rrmovq	%rdi, %rdx		# save start of array
+	rrmovq	%rdi, %rbx		# pos = start of array
+L2:
+	mrmovq	(%rdx), %r12	# array[j]
+	rrmovq	%r12, %r14
+	subq	%rcx, %r14		# compare min to array[j]
+	jge		keep
+	rrmovq	%r12, %rcx		# set new min
+	rrmovq	%rdx, %rbx		# set new pos
+keep:
+	addq	%r8, %rdx		# temp increment array
+	addq	%r9, %r11		# increment j
+	rrmovq	%rsi, %r12
+	subq	%r11, %r12		# j = n?
+	jne 	L2
+	
+	call	swap
+	addq	%r8, %rdi		# increment array
+	addq	%r9, %r10		# increment i
+	rrmovq	%rsi, %r12
+	subq	%r10, %r12		# i = n?
+	jne		L1
+	ret
+
+swap:
+	mrmovq	(%rdi), %r13	# get min of array
+	rmmovq	%rcx, (%rdi)	# front of array = min
+	rmmovq	%r13, (%rbx)	# old min = old front
+	ret
+
+.pos 0x200
+stack:
+
+
+
+#everything worked as expected
